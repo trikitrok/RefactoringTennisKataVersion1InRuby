@@ -1,3 +1,54 @@
+class GameOverDisplayer
+  def initialize(player_name)
+    @player_name = player_name
+  end
+
+  def display
+    "Win for " + @player_name
+  end
+end
+
+class AdvantageDisplayer
+  def initialize(player_name)
+    @player_name = player_name
+  end
+
+  def display
+    "Advantage " + @player_name
+  end
+end
+
+class TieDisplayer
+  def initialize(points)
+    @points = points
+  end
+
+  def display
+    {
+        0 => "Love-All",
+        1 => "Fifteen-All",
+        2 => "Thirty-All",
+    }.fetch(@points, "Deuce")
+  end
+end
+
+class DefaultDisplayer
+  def initialize(first_player_points, second_player_points)
+    @first_player_points = first_player_points
+    @second_player_points = second_player_points
+  end
+
+  def display
+    display_by_points = {
+        0 => "Love",
+        1 => "Fifteen",
+        2 => "Thirty",
+        3 => "Forty",
+    }
+    display_by_points[@first_player_points] + "-" + display_by_points[@second_player_points]
+  end
+end
+
 class TennisGame1
 
   def initialize(player1_name, player2_name)
@@ -43,37 +94,15 @@ class TennisGame1
   end
 
   def display_score (state)
-    def advantage_for (player_name)
-      "Advantage " + player_name
-    end
-
-    def win_for (player_name)
-      "Win for " + player_name
-    end
-
     displayers_by_state = {
-      :advantage1 => Proc.new { advantage_for(@player1_name)},
-      :advantage2 => Proc.new { advantage_for(@player2_name) },
-      :game_over1 => Proc.new { win_for(@player1_name) },
-      :game_over2 => Proc.new { win_for(@player2_name) },
-      :tied =>  Proc.new { 
-        {
-            0 => "Love-All",
-            1 => "Fifteen-All",
-            2 => "Thirty-All",
-        }.fetch(@p1points, "Deuce")
-      },
-      :default => Proc.new {
-        display_by_points = {
-            0 => "Love",
-            1 => "Fifteen",
-            2 => "Thirty",
-            3 => "Forty",
-        }
-        display_by_points[@p1points] + "-" + display_by_points[@p2points]
-      }
+      :advantage1 => AdvantageDisplayer.new(@player1_name),
+      :advantage2 => AdvantageDisplayer.new(@player2_name),
+      :game_over1 => GameOverDisplayer.new(@player1_name),
+      :game_over2 => GameOverDisplayer.new(@player2_name),
+      :tied =>  TieDisplayer.new(@p1points),
+      :default => DefaultDisplayer.new(@p1points, @p2points)
     }
 
-    displayers_by_state[state].call()
+    displayers_by_state[state].display()
   end
 end
