@@ -54,14 +54,18 @@ class TennisGame1
   end
 
   def display_score (state)
-    def avantage_for(player_name)
+    def advantage_for(player_name)
       "Advantage " + player_name
+    end
+
+    def win_for(player_name)
+      "Win for " + (@p1points > @p2points ? @player1_name : @player2_name)
     end
 
     display_by_state = {
       :deuce => Proc.new { "Deuce" },
-      :advantage => Proc.new { @p1points > @p2points ? avantage_for(@player1_name) : avantage_for(@player2_name) },
-      :game_over =>  Proc.new { "Win for " + (@p1points > @p2points ? @player1_name : @player2_name) },
+      :advantage => Proc.new { @p1points > @p2points ? advantage_for(@player1_name) : advantage_for(@player2_name) },
+      :game_over =>  Proc.new { @p1points > @p2points ? win_for(@player1_name) : win_for(@player2_name) },
       :initial => Proc.new {
         if tied?
           {
