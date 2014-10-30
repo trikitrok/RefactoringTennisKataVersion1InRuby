@@ -44,9 +44,9 @@ class TennisGame1
       elsif (minusResult ==-1)
         @state = :advantage2
       elsif (minusResult>=2)
-        @state = :game_over
+        @state = :game_over1
       else
-        @state = :game_over
+        @state = :game_over2
       end
     else
       @state = :default
@@ -62,10 +62,11 @@ class TennisGame1
       "Win for " + (@p1points > @p2points ? @player1_name : @player2_name)
     end
 
-    display_by_state = {
+    displayers_by_state = {
       :advantage1 => Proc.new { advantage_for(@player1_name)},
       :advantage2 => Proc.new { advantage_for(@player2_name) },
-      :game_over => Proc.new { @p1points > @p2points ? win_for(@player1_name) : win_for(@player2_name) },
+      :game_over1 => Proc.new { win_for(@player1_name) },
+      :game_over2 => Proc.new { win_for(@player2_name) },
       :tied =>  Proc.new { 
         {
             0 => "Love-All",
@@ -84,6 +85,6 @@ class TennisGame1
       }
     }
 
-    display_by_state[state].call()
+    displayers_by_state[state].call()
   end
 end
