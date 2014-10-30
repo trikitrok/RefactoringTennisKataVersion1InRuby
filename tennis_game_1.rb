@@ -50,13 +50,16 @@ class DefaultDisplayer
 end
 
 class Player 
-  attr_accessor :points, :name
+  attr_reader :points, :name
 
   def initialize(name) 
     @name = name
     @points = 0
   end
 
+  def won_point
+    @points += 1
+  end
 end 
 
 class TennisGame1
@@ -70,9 +73,9 @@ class TennisGame1
 
   def won_point(player_name)
     if player_name == first_player.name
-      first_player.points += 1
+      first_player.won_point
     else
-      second_player.points += 1
+      second_player.won_point
     end
   end
 
