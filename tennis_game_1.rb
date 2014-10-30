@@ -83,10 +83,14 @@ class TennisGame1
     points_difference.abs >= 2
   end
 
+  def both_under_forty_points?
+    @p1points < 4 and @p2points < 4 
+  end
+
   def score_displayer
     if tied?
       TieDisplayer.new(@p1points)
-    elsif @p1points < 4 and @p2points < 4
+    elsif both_under_forty_points?
       DefaultDisplayer.new(@p1points, @p2points)
     else
       if game_over?
