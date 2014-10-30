@@ -17,7 +17,7 @@ class TennisGame1
   end
 
   def score
-    current_game_state
+    update_game_state
 
     display_score
   end
@@ -30,7 +30,7 @@ class TennisGame1
     tied? and @p1points > 2
   end 
 
-  def current_game_state
+  def update_game_state
     if deuce?
       @state = :deuce
     elsif (@p1points>=4 or @p2points>=4)
