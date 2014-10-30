@@ -86,14 +86,14 @@ class TennisGame1
   def score_displayer
     if tied?
       TieDisplayer.new(@p1points)
-    elsif (@p1points>=4 or @p2points>=4)
+    elsif @p1points < 4 and @p2points < 4
+      DefaultDisplayer.new(@p1points, @p2points)
+    else
       if game_over?
         GameOverDisplayer.new(current_winner_name)
       else 
         AdvantageDisplayer.new(current_winner_name)
       end
-    else
-      DefaultDisplayer.new(@p1points, @p2points)
     end
   end
 end
