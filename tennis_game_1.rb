@@ -17,22 +17,7 @@ class TennisGame1
   end
 
   def score
-    if deuce?
-      @state = :deuce
-    elsif (@p1points>=4 or @p2points>=4)
-      minusResult = @p1points-@p2points
-      if (minusResult==1)
-        @state = :advantage
-      elsif (minusResult ==-1)
-        @state = :advantage
-      elsif (minusResult>=2)
-        @state = :game_over
-      else
-        @state = :game_over
-      end
-    else
-      @state = :initial
-    end
+    current_state
 
     if @state == :deuce
       "Deuce"
@@ -69,6 +54,25 @@ class TennisGame1
       }
 
       display_by_points[@p1points] + "-" + display_by_points[@p2points]
+    end
+  end
+
+  def current_state
+    if deuce?
+      @state = :deuce
+    elsif (@p1points>=4 or @p2points>=4)
+      minusResult = @p1points-@p2points
+      if (minusResult==1)
+        @state = :advantage
+      elsif (minusResult ==-1)
+        @state = :advantage
+      elsif (minusResult>=2)
+        @state = :game_over
+      else
+        @state = :game_over
+      end
+    else
+      @state = :initial
     end
   end
 end
