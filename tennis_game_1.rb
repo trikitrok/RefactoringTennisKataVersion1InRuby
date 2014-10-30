@@ -19,7 +19,7 @@ class TennisGame1
   def score
     update_game_state
 
-    display_score
+    display_score @state
   end
 
   def tied?
@@ -53,15 +53,12 @@ class TennisGame1
     end
   end
 
-  def display_score
-    if @state == :deuce
-      "Deuce"
-    elsif @state == :advantage
-      "Advantage " + (@p1points > @p2points ? @player1_name : @player2_name)
-    elsif @state == :game_over
-      "Win for " + (@p1points > @p2points ? @player1_name : @player2_name)
-    else
-      def score_before_deuce
+  def display_score (state)
+    display_by_state = {
+      :deuce => Proc.new { "Deuce" },
+      :advantage => Proc.new { "Advantage " + (@p1points > @p2points ? @player1_name : @player2_name) },
+      :game_over =>  Proc.new { "Win for " + (@p1points > @p2points ? @player1_name : @player2_name) },
+      :initial => Proc.new {
         if tied?
           {
               0 => "Love-All",
@@ -78,8 +75,9 @@ class TennisGame1
 
           display_by_points[@p1points] + "-" + display_by_points[@p2points]
         end
-      end
-      score_before_deuce
-    end
+      }
+    }
+
+    display_by_state[state].call()
   end
 end
