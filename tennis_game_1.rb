@@ -19,9 +19,9 @@ class TennisGame1
     result = ""
     tempScore=0
 
-    if @p1points==@p2points and @p1points > 2
+    if tied? and @p1points > 2
       result = "Deuce"
-    elsif (@p1points==@p2points)
+    elsif tied?
       result = {
           0 => "Love-All",
           1 => "Fifteen-All",
@@ -56,4 +56,8 @@ class TennisGame1
     end
     result
   end
+
+  def tied?
+    @p1points==@p2points
+  end 
 end
