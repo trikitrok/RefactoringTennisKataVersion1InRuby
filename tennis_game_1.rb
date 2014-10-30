@@ -26,12 +26,12 @@ class TennisGame1
     @p1points==@p2points
   end 
 
-  def deuce?
+  def tied_over_thirty?
     tied? and @p1points > 2
   end 
 
   def update_game_state
-    if deuce?
+    if tied_over_thirty?
       @state = :deuce
     elsif (@p1points>=4 or @p2points>=4)
       minusResult = @p1points-@p2points
