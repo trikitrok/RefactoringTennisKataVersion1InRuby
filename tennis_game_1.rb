@@ -19,24 +19,28 @@ class TennisGame1
   def score
     if deuce?
       @state = :deuce
-      "Deuce"
     elsif (@p1points>=4 or @p2points>=4)
       minusResult = @p1points-@p2points
       if (minusResult==1)
         @state = :advantage
-        "Advantage " + @player1_name
       elsif (minusResult ==-1)
         @state = :advantage
-        "Advantage " + @player2_name
       elsif (minusResult>=2)
         @state = :game_over
-        "Win for " + @player1_name
       else
         @state = :game_over
-        "Win for " + @player2_name
       end
     else
       @state = :initial
+    end
+
+    if @state == :deuce
+      "Deuce"
+    elsif @state == :advantage
+      "Advantage " + (@p1points > @p2points ? @player1_name : @player2_name)
+    elsif @state == :game_over
+      "Win for " + (@p1points > @p2points ? @player1_name : @player2_name)
+    else
       score_before_deuce
     end
   end
