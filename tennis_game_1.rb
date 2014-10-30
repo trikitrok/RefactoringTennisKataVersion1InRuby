@@ -16,13 +16,10 @@ class TennisGame1
   end
 
   def score
-    result = ""
-    tempScore=0
-
     if deuce?
-      result = "Deuce"
+      "Deuce"
     elsif tied?
-      result = {
+      {
           0 => "Love-All",
           1 => "Fifteen-All",
           2 => "Thirty-All",
@@ -30,15 +27,17 @@ class TennisGame1
     elsif (@p1points>=4 or @p2points>=4)
       minusResult = @p1points-@p2points
       if (minusResult==1)
-        result ="Advantage " + @player1_name
+        "Advantage " + @player1_name
       elsif (minusResult ==-1)
-        result ="Advantage " + @player2_name
+        "Advantage " + @player2_name
       elsif (minusResult>=2)
-        result = "Win for " + @player1_name
+        "Win for " + @player1_name
       else
-        result ="Win for " + @player2_name
+        "Win for " + @player2_name
       end
     else
+      result = ""
+      tempScore=0
       (1...3).each do |i|
         if (i==1)
           tempScore = @p1points
@@ -53,8 +52,8 @@ class TennisGame1
             3 => "Forty",
         }[tempScore]
       end
+      result
     end
-    result
   end
 
   def tied?
