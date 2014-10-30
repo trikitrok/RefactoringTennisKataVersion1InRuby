@@ -17,17 +17,9 @@ class TennisGame1
   end
 
   def score
-    current_state
+    current_game_state
 
-    if @state == :deuce
-      "Deuce"
-    elsif @state == :advantage
-      "Advantage " + (@p1points > @p2points ? @player1_name : @player2_name)
-    elsif @state == :game_over
-      "Win for " + (@p1points > @p2points ? @player1_name : @player2_name)
-    else
-      score_before_deuce
-    end
+    display_score
   end
 
   def tied?
@@ -38,26 +30,7 @@ class TennisGame1
     tied? and @p1points > 2
   end 
 
-  def score_before_deuce
-    if tied?
-      {
-          0 => "Love-All",
-          1 => "Fifteen-All",
-          2 => "Thirty-All",
-      }.fetch(@p1points)
-    else
-      display_by_points = {
-          0 => "Love",
-          1 => "Fifteen",
-          2 => "Thirty",
-          3 => "Forty",
-      }
-
-      display_by_points[@p1points] + "-" + display_by_points[@p2points]
-    end
-  end
-
-  def current_state
+  def current_game_state
     if deuce?
       @state = :deuce
     elsif (@p1points>=4 or @p2points>=4)
@@ -73,6 +46,36 @@ class TennisGame1
       end
     else
       @state = :initial
+    end
+  end
+
+  def display_score
+    if @state == :deuce
+      "Deuce"
+    elsif @state == :advantage
+      "Advantage " + (@p1points > @p2points ? @player1_name : @player2_name)
+    elsif @state == :game_over
+      "Win for " + (@p1points > @p2points ? @player1_name : @player2_name)
+    else
+      def score_before_deuce
+        if tied?
+          {
+              0 => "Love-All",
+              1 => "Fifteen-All",
+              2 => "Thirty-All",
+          }.fetch(@p1points)
+        else
+          display_by_points = {
+              0 => "Love",
+              1 => "Fifteen",
+              2 => "Thirty",
+              3 => "Forty",
+          }
+
+          display_by_points[@p1points] + "-" + display_by_points[@p2points]
+        end
+      end
+      score_before_deuce
     end
   end
 end
