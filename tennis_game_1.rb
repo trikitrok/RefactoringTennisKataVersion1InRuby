@@ -18,12 +18,6 @@ class TennisGame1
   def score
     if deuce?
       "Deuce"
-    elsif tied?
-      {
-          0 => "Love-All",
-          1 => "Fifteen-All",
-          2 => "Thirty-All",
-      }.fetch(@p1points)
     elsif (@p1points>=4 or @p2points>=4)
       minusResult = @p1points-@p2points
       if (minusResult==1)
@@ -49,13 +43,21 @@ class TennisGame1
   end 
 
   def score_before_deuce
-    display_by_points = {
-        0 => "Love",
-        1 => "Fifteen",
-        2 => "Thirty",
-        3 => "Forty",
-    }
+    if tied?
+      {
+          0 => "Love-All",
+          1 => "Fifteen-All",
+          2 => "Thirty-All",
+      }.fetch(@p1points)
+    else
+      display_by_points = {
+          0 => "Love",
+          1 => "Fifteen",
+          2 => "Thirty",
+          3 => "Forty",
+      }
 
-    display_by_points[@p1points] + "-" + display_by_points[@p2points]
+      display_by_points[@p1points] + "-" + display_by_points[@p2points]
+    end
   end
 end
