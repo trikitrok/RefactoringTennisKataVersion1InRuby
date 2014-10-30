@@ -36,23 +36,7 @@ class TennisGame1
         "Win for " + @player2_name
       end
     else
-      result = ""
-      tempScore=0
-      (1...3).each do |i|
-        if (i==1)
-          tempScore = @p1points
-        else
-          result+="-"
-          tempScore = @p2points
-        end
-        result += {
-            0 => "Love",
-            1 => "Fifteen",
-            2 => "Thirty",
-            3 => "Forty",
-        }[tempScore]
-      end
-      result
+      scoreBeforeDeuce
     end
   end
 
@@ -63,4 +47,24 @@ class TennisGame1
   def deuce?
     tied? and @p1points > 2
   end 
+
+  def scoreBeforeDeuce
+    result = ""
+    tempScore=0
+    (1...3).each do |i|
+      if (i==1)
+        tempScore = @p1points
+      else
+        result+="-"
+        tempScore = @p2points
+      end
+      result += {
+          0 => "Love",
+          1 => "Fifteen",
+          2 => "Thirty",
+          3 => "Forty",
+      }[tempScore]
+    end
+    result
+  end
 end
