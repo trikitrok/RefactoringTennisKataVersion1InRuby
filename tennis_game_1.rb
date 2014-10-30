@@ -23,14 +23,6 @@ class TennisGame1
     @p1points==@p2points
   end 
 
-  def over_thirty?
-    @p1points > 2
-  end
-
-  def tied_over_thirty?
-    tied? and over_thirty?
-  end 
-
   def game_state
     if tied?
       :tied
