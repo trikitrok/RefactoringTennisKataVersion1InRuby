@@ -78,19 +78,19 @@ class TennisGame1
     (@p1points > @p2points ? @player1_name : @player2_name)
   end
 
+  def game_over?
+    points_difference = @p1points-@p2points
+    points_difference.abs >= 2
+  end
+
   def score_displayer
     if tied?
       TieDisplayer.new(@p1points)
     elsif (@p1points>=4 or @p2points>=4)
-      minusResult = @p1points-@p2points
-      if (minusResult==1)
-        AdvantageDisplayer.new(current_winner_name)
-      elsif (minusResult ==-1)
-        AdvantageDisplayer.new(current_winner_name)
-      elsif (minusResult>=2)
+      if game_over?
         GameOverDisplayer.new(current_winner_name)
-      else
-        GameOverDisplayer.new(current_winner_name)
+      else 
+        AdvantageDisplayer.new(current_winner_name)
       end
     else
       DefaultDisplayer.new(@p1points, @p2points)
