@@ -63,9 +63,6 @@ class Player
 end 
 
 class TennisGame1
-
-  attr_reader :first_player, :second_player
-
   def initialize(player1_name, player2_name)
     @first_player = Player.new(player1_name)
     @second_player = Player.new(player2_name)
@@ -82,6 +79,9 @@ class TennisGame1
   def score
     score_displayer().display
   end
+
+  private
+  attr_reader :first_player, :second_player
 
   def tied?
     first_player.points == second_player.points
