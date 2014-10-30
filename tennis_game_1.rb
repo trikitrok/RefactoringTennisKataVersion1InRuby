@@ -36,7 +36,7 @@ class TennisGame1
         "Win for " + @player2_name
       end
     else
-      scoreBeforeDeuce
+      score_before_deuce
     end
   end
 
@@ -48,14 +48,14 @@ class TennisGame1
     tied? and @p1points > 2
   end 
 
-  def scoreBeforeDeuce
-    displayByPoints = {
+  def score_before_deuce
+    display_by_points = {
         0 => "Love",
         1 => "Fifteen",
         2 => "Thirty",
         3 => "Forty",
     }
 
-    displayByPoints[@p1points] + "-" + displayByPoints[@p2points]
+    display_by_points[@p1points] + "-" + display_by_points[@p2points]
   end
 end
