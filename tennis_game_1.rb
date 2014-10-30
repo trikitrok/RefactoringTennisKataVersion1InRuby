@@ -48,7 +48,7 @@ class TennisGame1
     end
 
     def win_for (player_name)
-      "Win for " + (@p1points > @p2points ? @player1_name : @player2_name)
+      "Win for " + player_name
     end
 
     displayers_by_state = {
