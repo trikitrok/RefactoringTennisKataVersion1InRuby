@@ -19,7 +19,7 @@ class TennisGame1
     result = ""
     tempScore=0
 
-    if tied? and @p1points > 2
+    if deuce?
       result = "Deuce"
     elsif tied?
       result = {
@@ -59,5 +59,9 @@ class TennisGame1
 
   def tied?
     @p1points==@p2points
+  end 
+
+  def deuce?
+    tied? and @p1points > 2
   end 
 end
