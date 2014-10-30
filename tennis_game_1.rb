@@ -67,42 +67,29 @@ class TennisGame1
   end
 
   def score
-    display_score game_state
+    score_displayer().display
   end
 
   def tied?
     @p1points==@p2points
-  end 
+  end
 
-  def game_state
+  def score_displayer
     if tied?
-      :tied
+      TieDisplayer.new(@p1points)
     elsif (@p1points>=4 or @p2points>=4)
       minusResult = @p1points-@p2points
       if (minusResult==1)
-        :advantage1
+        AdvantageDisplayer.new(@player1_name)
       elsif (minusResult ==-1)
-        :advantage2
+        AdvantageDisplayer.new(@player2_name)
       elsif (minusResult>=2)
-        :game_over1
+        GameOverDisplayer.new(@player1_name)
       else
-        :game_over2
+        GameOverDisplayer.new(@player2_name)
       end
     else
-      :default
+      DefaultDisplayer.new(@p1points, @p2points)
     end
-  end
-
-  def display_score (state)
-    displayers_by_state = {
-      :advantage1 => AdvantageDisplayer.new(@player1_name),
-      :advantage2 => AdvantageDisplayer.new(@player2_name),
-      :game_over1 => GameOverDisplayer.new(@player1_name),
-      :game_over2 => GameOverDisplayer.new(@player2_name),
-      :tied =>  TieDisplayer.new(@p1points),
-      :default => DefaultDisplayer.new(@p1points, @p2points)
-    }
-
-    displayers_by_state[state].display()
   end
 end
