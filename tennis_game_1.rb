@@ -84,8 +84,8 @@ class TennisGame1
     first_player.points == second_player.points
   end
 
-  def current_winner_name
-    (first_player.points > second_player.points ? first_player.name : second_player.name)
+  def current_winner
+    first_player.points > second_player.points ? first_player : second_player
   end
 
   def game_over?
@@ -104,9 +104,9 @@ class TennisGame1
       DefaultDisplayer.new(first_player.points, second_player.points)
     else
       if game_over?
-        GameOverDisplayer.new(current_winner_name)
+        GameOverDisplayer.new(current_winner().name)
       else 
-        AdvantageDisplayer.new(current_winner_name)
+        AdvantageDisplayer.new(current_winner().name)
       end
     end
   end
