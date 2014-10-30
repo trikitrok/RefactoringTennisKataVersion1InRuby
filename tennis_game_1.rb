@@ -5,7 +5,6 @@ class TennisGame1
     @player2_name = player2_name
     @p1points = 0
     @p2points = 0
-    @state = :initial
   end
 
   def won_point(player_name)
@@ -17,9 +16,7 @@ class TennisGame1
   end
 
   def score
-    update_game_state
-
-    display_score @state
+    display_score game_state
   end
 
   def tied?
@@ -34,22 +31,22 @@ class TennisGame1
     tied? and over_thirty?
   end 
 
-  def update_game_state
+  def game_state
     if tied?
-      @state = :tied
+      :tied
     elsif (@p1points>=4 or @p2points>=4)
       minusResult = @p1points-@p2points
       if (minusResult==1)
-        @state = :advantage1
+        :advantage1
       elsif (minusResult ==-1)
-        @state = :advantage2
+        :advantage2
       elsif (minusResult>=2)
-        @state = :game_over1
+        :game_over1
       else
-        @state = :game_over2
+        :game_over2
       end
     else
-      @state = :default
+      :default
     end
   end
 
