@@ -49,20 +49,30 @@ class DefaultDisplayer
   end
 end
 
+class Player 
+  attr_accessor :points, :name
+
+  def initialize(name) 
+    @name = name
+    @points = 0
+  end
+
+end 
+
 class TennisGame1
 
+  attr_reader :first_player, :second_player
+
   def initialize(player1_name, player2_name)
-    @player1_name = player1_name
-    @player2_name = player2_name
-    @p1points = 0
-    @p2points = 0
+    @first_player = Player.new(player1_name)
+    @second_player = Player.new(player2_name)
   end
 
   def won_point(player_name)
-    if player_name == @player1_name
-      @p1points += 1
+    if player_name == first_player.name
+      first_player.points += 1
     else
-      @p2points += 1
+      second_player.points += 1
     end
   end
 
@@ -71,27 +81,27 @@ class TennisGame1
   end
 
   def tied?
-    @p1points==@p2points
+    first_player.points == second_player.points
   end
 
   def current_winner_name
-    (@p1points > @p2points ? @player1_name : @player2_name)
+    (first_player.points > second_player.points ? first_player.name : second_player.name)
   end
 
   def game_over?
-    points_difference = @p1points-@p2points
+    points_difference = first_player.points - second_player.points
     points_difference.abs >= 2
   end
 
   def both_under_forty_points?
-    @p1points < 4 and @p2points < 4 
+    first_player.points < 4 and second_player.points < 4 
   end
 
   def score_displayer
     if tied?
-      TieDisplayer.new(@p1points)
+      TieDisplayer.new(first_player.points)
     elsif both_under_forty_points?
-      DefaultDisplayer.new(@p1points, @p2points)
+      DefaultDisplayer.new(first_player.points, second_player.points)
     else
       if game_over?
         GameOverDisplayer.new(current_winner_name)
