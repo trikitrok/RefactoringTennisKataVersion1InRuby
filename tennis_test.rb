@@ -58,7 +58,7 @@ class TestTennis < Test::Unit::TestCase
   def play_game(p1_points, p2_points, p1_name, p2_name)
     first_player = Player.new(p1_name)
     second_player = Player.new(p2_name)
-    score_displayer = ScoreDisplayer.in_english(first_player, second_player)
+    score_displayer = ScoreDisplayer.new(first_player, second_player)
 
     game = TennisGame.new(first_player, second_player, score_displayer)
     (0..[p1_points, p2_points].max).each do |i|

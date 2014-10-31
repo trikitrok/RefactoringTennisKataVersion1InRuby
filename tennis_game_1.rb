@@ -69,9 +69,12 @@ class GameVocabulary
 end
 
 class ScoreDisplayer
-   class << self  
-    def in_english(first_player, second_player)
-      english_vocabulary = {
+  attr_accessor :vocabulary
+
+  def initialize(first_player, second_player)
+    @first_player = first_player 
+    @second_player = second_player
+    @vocabulary = GameVocabulary.new({
         :zero_all => "Love-All",
         :fifteen_all => "Fifteen-All",
         :thirty_all => "Thirty-All",
@@ -82,16 +85,7 @@ class ScoreDisplayer
         :forty => "Forty",
         :advantage => "Advantage",
         :game_over => "Win for"
-      }
-
-      new(first_player, second_player, GameVocabulary.new(english_vocabulary))  
-    end  
-  end
-
-  def initialize(first_player, second_player, vocabulary)
-    @first_player = first_player 
-    @second_player = second_player
-    @vocabulary = vocabulary
+      })
   end
 
   def display
@@ -99,7 +93,7 @@ class ScoreDisplayer
   end
 
   private
-  attr_reader :vocabulary, :first_player, :second_player 
+  attr_reader :first_player, :second_player 
 
   def displayer
     if tied?
