@@ -49,6 +49,57 @@ class DefaultDisplayer
   end
 end
 
+class ScoreDisplayer
+  attr_reader :first_player, :second_player  
+
+  def initialize(first_player, second_player)
+    @first_player = first_player 
+    @second_player = second_player    
+  end
+
+  def display
+    displayer().display
+  end
+
+  private
+  def displayer
+    if tied?
+      TieDisplayer.new(first_player.points)
+    elsif both_under_forty_points?
+      DefaultDisplayer.new(first_player.points, second_player.points)
+    elsif game_over?
+      GameOverDisplayer.new(current_winner().name)
+    else 
+      AdvantageDisplayer.new(current_winner().name)
+    end
+  end
+
+  def tied?
+    first_player.points == second_player.points
+  end
+
+  def difference_of_two_or_more_points?
+    points_difference = first_player.points - second_player.points
+    points_difference.abs >= 2
+  end
+
+  def game_over?
+    any_over_forty_points? and difference_of_two_or_more_points?
+  end
+
+  def any_over_forty_points?
+    not both_under_forty_points?
+  end
+
+  def both_under_forty_points?
+    first_player.points < 4 and second_player.points < 4 
+  end
+
+  def current_winner
+    first_player.points > second_player.points ? first_player : second_player
+  end
+end
+
 class Player 
   attr_reader :points, :name
 
@@ -63,9 +114,12 @@ class Player
 end 
 
 class TennisGame1
-  def initialize(player1_name, player2_name)
-    @first_player = Player.new(player1_name)
-    @second_player = Player.new(player2_name)
+  attr_reader :first_player, :second_player, :score_displayer
+
+  def initialize(first_player, second_player, score_displayer)
+    @first_player = first_player 
+    @second_player = second_player
+    @score_displayer = score_displayer
   end
 
   def won_point(player_name)
@@ -77,51 +131,6 @@ class TennisGame1
   end
 
   def score
-    score_displayer().display
-  end
-
-  private
-  attr_reader :first_player, :second_player
-
-  def tied?
-    first_player.points == second_player.points
-  end
-
-  def current_winner
-    first_player.points > second_player.points ? first_player : second_player
-  end
-
-  def point_difference_greater_than_two?
-    points_difference = first_player.points - second_player.points
-    points_difference.abs
-  end
-
-  def difference_of_two_points?
-    points_difference = first_player.points - second_player.points
-    points_difference.abs >= 2
-  end
-
-  def game_over?
-    any_over_forty_points? and difference_of_two_points?
-  end
-
-  def any_over_forty_points?
-    not both_under_forty_points?
-  end
-
-  def both_under_forty_points?
-    first_player.points < 4 and second_player.points < 4 
-  end
-
-  def score_displayer
-    if tied?
-      TieDisplayer.new(first_player.points)
-    elsif both_under_forty_points?
-      DefaultDisplayer.new(first_player.points, second_player.points)
-    elsif game_over?
-      GameOverDisplayer.new(current_winner().name)
-    else 
-      AdvantageDisplayer.new(current_winner().name)
-    end
+    score_displayer.display
   end
 end
