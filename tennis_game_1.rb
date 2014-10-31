@@ -68,8 +68,26 @@ class GameVocabulary
   end
 end
 
-
 class ScoreDisplayer
+   class << self  
+    def in_english(first_player, second_player)
+      english_vocabulary = {
+        :zero_all => "Love-All",
+        :fifteen_all => "Fifteen-All",
+        :thirty_all => "Thirty-All",
+        :deuce => "Deuce",
+        :zero => "Love",
+        :fifteen => "Fifteen",
+        :thirty => "Thirty",
+        :forty => "Forty",
+        :advantage => "Advantage",
+        :game_over => "Win for"
+      }
+
+      new(first_player, second_player, GameVocabulary.new(english_vocabulary))  
+    end  
+  end
+
   def initialize(first_player, second_player, vocabulary)
     @first_player = first_player 
     @second_player = second_player
@@ -134,7 +152,7 @@ class Player
   end
 end 
 
-class TennisGame1
+class TennisGame
   attr_reader :first_player, :second_player, :score_displayer
 
   def initialize(first_player, second_player, score_displayer)
