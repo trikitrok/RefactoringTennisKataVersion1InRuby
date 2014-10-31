@@ -91,9 +91,22 @@ class TennisGame1
     first_player.points > second_player.points ? first_player : second_player
   end
 
-  def game_over?
+  def point_difference_greater_than_two?
+    points_difference = first_player.points - second_player.points
+    points_difference.abs
+  end
+
+  def difference_of_two_points?
     points_difference = first_player.points - second_player.points
     points_difference.abs >= 2
+  end
+
+  def game_over?
+    any_over_forty_points? and difference_of_two_points?
+  end
+
+  def any_over_forty_points?
+    not both_under_forty_points?
   end
 
   def both_under_forty_points?
@@ -105,12 +118,10 @@ class TennisGame1
       TieDisplayer.new(first_player.points)
     elsif both_under_forty_points?
       DefaultDisplayer.new(first_player.points, second_player.points)
-    else
-      if game_over?
-        GameOverDisplayer.new(current_winner().name)
-      else 
-        AdvantageDisplayer.new(current_winner().name)
-      end
+    elsif game_over?
+      GameOverDisplayer.new(current_winner().name)
+    else 
+      AdvantageDisplayer.new(current_winner().name)
     end
   end
 end
