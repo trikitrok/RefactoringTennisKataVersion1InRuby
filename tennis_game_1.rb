@@ -1,60 +1,79 @@
 class GameOverDisplayer
-  def initialize(player_name)
+  def initialize(player_name, vocabulary)
     @player_name = player_name
+    @vocabulary = vocabulary
   end
 
   def display
-    "Win for " + @player_name
+    @vocabulary.word_for(:game_over) + " " + @player_name
   end
 end
 
 class AdvantageDisplayer
-  def initialize(player_name)
+  def initialize(player_name, vocabulary)
     @player_name = player_name
+    @vocabulary = vocabulary
   end
 
   def display
-    "Advantage " + @player_name
+    @vocabulary.word_for(:advantage) + " " + @player_name
   end
 end
 
 class TieDisplayer
-  def initialize(points)
+  def initialize(points, vocabulary)
     @points = points
+    @vocabulary = vocabulary
   end
 
   def display
-    {
-        0 => "Love-All",
-        1 => "Fifteen-All",
-        2 => "Thirty-All",
-    }.fetch(@points, "Deuce")
+    key = {
+      0 => :zero_all,
+      1 => :fifteen_all,
+      2 => :thirty_all,
+    }.fetch(@points, :deuce)
+
+    @vocabulary.word_for(key)
   end
 end
 
 class DefaultDisplayer
-  def initialize(first_player_points, second_player_points)
+  def initialize(first_player_points, second_player_points, vocabulary)
     @first_player_points = first_player_points
     @second_player_points = second_player_points
+    @vocabulary = vocabulary
   end
 
   def display
-    display_by_points = {
-        0 => "Love",
-        1 => "Fifteen",
-        2 => "Thirty",
-        3 => "Forty",
+    key_by_points = {
+        0 => :zero,
+        1 => :fifteen,
+        2 => :thirty,
+        3 => :forty,
     }
-    display_by_points[@first_player_points] + "-" + display_by_points[@second_player_points]
+
+    @vocabulary.word_for(key_by_points[@first_player_points]) + 
+      "-" + 
+      @vocabulary.word_for(key_by_points[@second_player_points])
   end
 end
 
-class ScoreDisplayer
-  attr_reader :first_player, :second_player  
+class GameVocabulary
+  def initialize(vocabulary)
+    @vocabulary = vocabulary
+  end
 
-  def initialize(first_player, second_player)
+  def word_for(key)
+    @vocabulary[key]
+  end
+end
+
+
+class ScoreDisplayer
+  def initialize(first_player, second_player, vocabulary)
     @first_player = first_player 
-    @second_player = second_player    
+    @second_player = second_player
+    @vocabulary = vocabulary
   end
 
   def display
@@ -62,15 +81,17 @@ class ScoreDisplayer
   end
 
   private
+  attr_reader :vocabulary, :first_player, :second_player 
+
   def displayer
     if tied?
-      TieDisplayer.new(first_player.points)
+      TieDisplayer.new(first_player.points, vocabulary)
     elsif both_under_forty_points?
-      DefaultDisplayer.new(first_player.points, second_player.points)
+      DefaultDisplayer.new(first_player.points, second_player.points, vocabulary)
     elsif game_over?
-      GameOverDisplayer.new(current_winner().name)
+      GameOverDisplayer.new(current_winner().name, vocabulary)
     else 
-      AdvantageDisplayer.new(current_winner().name)
+      AdvantageDisplayer.new(current_winner().name, vocabulary)
     end
   end
 

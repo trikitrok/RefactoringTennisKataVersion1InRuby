@@ -56,9 +56,21 @@ class TestTennis < Test::Unit::TestCase
   end
 
   def play_game(p1_points, p2_points, p1_name, p2_name)
+    game_english_vocabulary = {
+      :zero_all => "Love-All",
+      :fifteen_all => "Fifteen-All",
+      :thirty_all => "Thirty-All",
+      :deuce => "Deuce",
+      :zero => "Love",
+      :fifteen => "Fifteen",
+      :thirty => "Thirty",
+      :forty => "Forty",
+      :advantage => "Advantage",
+      :game_over => "Win for"
+    }
     first_player = Player.new(p1_name)
     second_player = Player.new(p2_name)
-    score_displayer = ScoreDisplayer.new(first_player, second_player)
+    score_displayer = ScoreDisplayer.new(first_player, second_player, GameVocabulary.new(game_english_vocabulary))
 
     game = TennisGame1.new(first_player, second_player, score_displayer)
     (0..[p1_points, p2_points].max).each do |i|
