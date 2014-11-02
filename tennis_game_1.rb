@@ -20,25 +20,12 @@ class GameState
     first_player.points == second_player.points
   end
 
-  def with_points_difference_of_two_or_more?
-    points_difference = first_player.points - second_player.points
-    points_difference.abs >= 2
+  def advantage_for_any_player?
+    both_with_forty_or_more? and one_point_difference?
   end
 
   def over?
-    with_any_player_over_forty_points? and with_points_difference_of_two_or_more?
-  end
-
-  def with_any_player_over_forty_points?
-    not with_both_players_under_forty_points?
-  end
-
-  def with_both_players_under_forty_points?
-    first_player.points < 4 and second_player.points < 4 
-  end
-
-  def current_winner
-    first_player.points > second_player.points ? first_player : second_player
+    any_over_forty? and two_or_more_points_difference?
   end
 
   def won_point(player_name)
@@ -47,6 +34,32 @@ class GameState
     else
       second_player.won_point
     end
+  end
+
+  def current_winner
+    first_player.points > second_player.points ? first_player : second_player
+  end
+
+  private
+
+  def points_difference
+    (first_player.points - second_player.points).abs
+  end
+
+  def two_or_more_points_difference?
+    points_difference() >= 2
+  end
+
+  def one_point_difference?
+    points_difference() == 1
+  end
+
+  def both_with_forty_or_more?
+    first_player.points >= 3 and second_player.points >= 3
+  end
+
+  def any_over_forty?
+    first_player.points >= 4 or second_player.points >= 4
   end
 end
 
@@ -71,12 +84,12 @@ class ScoreDisplayer
   def display(game_state)
     if game_state.tied?
       display_tie(game_state.first_player)
-    elsif game_state.with_both_players_under_forty_points?
-      display_default(game_state.first_player, game_state.second_player)
     elsif game_state.over?
       display_game_over(game_state.current_winner())
-    else 
+    elsif game_state.advantage_for_any_player?
       display_advantage(game_state.current_winner())
+    else 
+      display_default(game_state.first_player, game_state.second_player)
     end
   end
 
