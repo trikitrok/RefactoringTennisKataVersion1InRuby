@@ -21,11 +21,11 @@ class GameState
   end
 
   def advantage_for_any_player?
-    both_with_forty_or_more? and one_point_difference?
+    both_with_forty_or_more? and points_difference() == 1
   end
 
   def over?
-    any_over_forty? and two_or_more_points_difference?
+    any_over_forty? and points_difference() >= 2
   end
 
   def won_point(player_name)
@@ -44,14 +44,6 @@ class GameState
 
   def points_difference
     (first_player.points - second_player.points).abs
-  end
-
-  def two_or_more_points_difference?
-    points_difference() >= 2
-  end
-
-  def one_point_difference?
-    points_difference() == 1
   end
 
   def both_with_forty_or_more?
