@@ -111,9 +111,10 @@ class TestTennis < Test::Unit::TestCase
   def display_game_in_english(p1_points, p2_points, p1_name, p2_name)
     first_player = Player.new(p1_name)
     second_player = Player.new(p2_name)
-    score_displayer = ScoreDisplayer.new(first_player, second_player)
+    game_state = GameState.new(first_player, second_player)
+    score_displayer = ScoreDisplayer.new()
     
-    play_game(p1_points, p2_points, p1_name, p2_name, TennisGame.new(first_player, second_player, score_displayer))
+    play_game(p1_points, p2_points, p1_name, p2_name, TennisGame.new(game_state, score_displayer))
   end
 
   def display_game_in_spanish(p1_points, p2_points, p1_name, p2_name)
@@ -131,10 +132,11 @@ class TestTennis < Test::Unit::TestCase
     }
     first_player = Player.new(p1_name)
     second_player = Player.new(p2_name)
-    score_displayer = ScoreDisplayer.new(first_player, second_player)
+    game_state = GameState.new(first_player, second_player)
+    score_displayer = ScoreDisplayer.new()
     score_displayer.vocabulary = GameVocabulary.new(spanish_game_vocabulary)
     
-    play_game(p1_points, p2_points, p1_name, p2_name, TennisGame.new(first_player, second_player, score_displayer))
+    play_game(p1_points, p2_points, p1_name, p2_name, TennisGame.new(game_state, score_displayer))
   end
 
   def play_game(p1_points, p2_points, p1_name, p2_name, game)
