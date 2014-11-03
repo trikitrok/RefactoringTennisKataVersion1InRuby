@@ -8,7 +8,7 @@ class GameVocabulary
   end
 end
 
-class GameState
+class GameScore
   attr_reader :first_player, :second_player
 
   def initialize(first_player, second_player)
