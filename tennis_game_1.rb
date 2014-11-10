@@ -1,3 +1,20 @@
+class TennisGame
+  attr_reader :game_state, :score_displayer
+
+  def initialize(game_state, score_displayer)
+    @game_state = game_state 
+    @score_displayer = score_displayer
+  end
+
+  def won_point(player_name)
+    game_state.won_point(player_name)
+  end
+
+  def score
+    score_displayer.display(game_state)
+  end
+end
+
 class GameVocabulary
   def initialize(vocabulary)
     @vocabulary = vocabulary
@@ -130,19 +147,4 @@ class Player
   end
 end 
 
-class TennisGame
-  attr_reader :game_state, :score_displayer
 
-  def initialize(game_state, score_displayer)
-    @game_state = game_state 
-    @score_displayer = score_displayer
-  end
-
-  def won_point(player_name)
-    game_state.won_point(player_name)
-  end
-
-  def score
-    score_displayer.display(game_state)
-  end
-end
