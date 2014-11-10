@@ -1,27 +1,17 @@
 class TennisGame
-  attr_reader :game_state, :score_displayer
+  attr_reader :game_score, :score_displayer
 
-  def initialize(game_state, score_displayer)
-    @game_state = game_state 
+  def initialize(game_score, score_displayer)
+    @game_score = game_score 
     @score_displayer = score_displayer
   end
 
   def won_point(player_name)
-    game_state.won_point(player_name)
+    game_score.won_point(player_name)
   end
 
   def score
-    score_displayer.display(game_state)
-  end
-end
-
-class GameVocabulary
-  def initialize(vocabulary)
-    @vocabulary = vocabulary
-  end
-
-  def word_for(key)
-    @vocabulary[key]
+    score_displayer.display(game_score)
   end
 end
 
@@ -72,6 +62,19 @@ class GameScore
   end
 end
 
+class Player 
+  attr_reader :points, :name
+
+  def initialize(name) 
+    @name = name
+    @points = 0
+  end
+
+  def won_point
+    @points += 1
+  end
+end 
+
 class ScoreDisplayer
   attr_accessor :vocabulary
 
@@ -90,15 +93,15 @@ class ScoreDisplayer
       })
   end
 
-  def display(game_state)
-    if game_state.tied?
-      display_tie(game_state.first_player)
-    elsif game_state.over?
-      display_game_over(game_state.current_winner())
-    elsif game_state.advantage_for_any_player?
-      display_advantage(game_state.current_winner())
+  def display(game_score)
+    if game_score.tied?
+      display_tie(game_score.first_player)
+    elsif game_score.over?
+      display_game_over(game_score.current_winner())
+    elsif game_score.advantage_for_any_player?
+      display_advantage(game_score.current_winner())
     else 
-      display_default(game_state.first_player, game_state.second_player)
+      display_default(game_score.first_player, game_score.second_player)
     end
   end
 
@@ -134,17 +137,12 @@ class ScoreDisplayer
   end
 end
 
-class Player 
-  attr_reader :points, :name
-
-  def initialize(name) 
-    @name = name
-    @points = 0
+class GameVocabulary
+  def initialize(vocabulary)
+    @vocabulary = vocabulary
   end
 
-  def won_point
-    @points += 1
+  def word_for(key)
+    @vocabulary[key]
   end
-end 
-
-
+end
